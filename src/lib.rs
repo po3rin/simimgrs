@@ -1,12 +1,25 @@
+//! This crate checks for similar image using average hash algorism.
+//! The average of the luminance values ​​is calculated, and the 64-bit
+//! hash value is calculated as “1” for greater than the average
+//! and “0” for less than the average.
+
 use image::{self, FilterType, GenericImageView};
 
+/// SimilarChecker has settings for detecting similar image.
 pub struct SimilarChecker {
-    pub threshold: usize,
-    pub compressed_w: usize,
-    pub compressed_h: usize,
+    threshold: usize,
+    compressed_w: usize,
+    compressed_h: usize,
 }
 
 impl SimilarChecker {
+    /// Inits SimilarChecker with params.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// let checker = simimgrs::SimilarChecker::new(10, 8, 8);
+    /// ```
     pub fn new(threshold: usize, compressed_w: usize, compressed_h: usize) -> SimilarChecker {
         SimilarChecker {
             threshold,
@@ -15,6 +28,17 @@ impl SimilarChecker {
         }
     }
 
+    /// Checks for similar image using average hash algorism.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// let img1 = image::open("testdata/aws_batch.png").unwrap();
+    /// let img2 = image::open("testdata/aws_rekognition.png").unwrap();
+
+    /// let checker = simimgrs::SimilarChecker::new(10, 8, 8);
+    /// assert!(!checker.is_similar(img1, img2))
+    /// ```
     pub fn is_similar(&self, img1: image::DynamicImage, img2: image::DynamicImage) -> bool {
         let hash1 = get_hash(process(img1, self.compressed_w, self.compressed_h));
         let hash2 = get_hash(process(img2, self.compressed_w, self.compressed_h));
@@ -78,12 +102,12 @@ fn get_distance(hash1: usize, hash2: usize) -> usize {
 mod tests {
     use super::*;
     #[test]
-    fn get_hash_1() {
+    fn get_distance_1() {
         assert_eq!(get_distance(2247878505465, 2488321179641), 6)
     }
 
     #[test]
-    fn get_hash_2() {
+    fn get_distance_2() {
         assert_eq!(get_distance(17431013446337445887, 17431022259610337215), 3)
     }
 }

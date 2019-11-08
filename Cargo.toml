@@ -3,6 +3,8 @@ name = "simimgrs"
 version = "0.1.0"
 authors = ["po3rin <abctail30@gmail.com>"]
 edition = "2018"
+license = "Apache-2.0"
+description = "this crate checks for similar image using average hash algorism."
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
