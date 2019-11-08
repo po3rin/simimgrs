@@ -1,6 +1,10 @@
 # simimgrs
 
+[![CircleCI](https://circleci.com/gh/po3rin/simimgrs.svg?style=shield)](https://circleci.com/gh/po3rin/simimgrs)
+
 -----
+
+in devlopment ...
 
 ## What is
 
