@@ -4,26 +4,13 @@ extern crate simimgrs;
 use std::env;
 
 fn main() {
-    let mut args = env::args();
-    args.next(); // skip command name
+    let args: Vec<String> = env::args().collect();
+    if args.len() != 3 {
+        eprintln!("arguments require only 2 path of image files");
+    }
 
-    // open image file 1
-    let img_path1 = match args.next() {
-        None => {
-            eprintln!("Error: Input file path is not specified. ");
-            return;
-        }
-        Some(s) => s,
-    };
-
-    // open image file 2
-    let img_path2 = match args.next() {
-        None => {
-            eprintln!("Error: Input file path is not specified. ");
-            return;
-        }
-        Some(s) => s,
-    };
+    let img_path1 = &args[1];
+    let img_path2 = &args[2];
 
     let img1 = image::open(&img_path1).unwrap();
     let img2 = image::open(&img_path2).unwrap();
