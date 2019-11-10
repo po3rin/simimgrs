@@ -15,7 +15,7 @@ fn main() {
     let img1 = image::open(&img_path1).unwrap();
     let img2 = image::open(&img_path2).unwrap();
 
-    let checker = simimgrs::SimilarChecker::new();
+    let checker = simimgrs::SimilarChecker::default();
 
     println!("similar image: {}", checker.is_similar(img1, img2))
 }

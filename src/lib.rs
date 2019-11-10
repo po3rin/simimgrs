@@ -6,12 +6,21 @@
 use image::{self, FilterType, GenericImageView};
 
 /// SimilarChecker has settings for detecting similar image.
-#[derive(Default)]
+// #[derive(Default)]
 pub struct SimilarChecker {
     threshold: usize,
     compressed_w: usize,
     compressed_h: usize,
-    grayscale : bool,
+}
+
+impl Default for SimilarChecker {
+    fn default() -> Self {
+        SimilarChecker {
+            threshold: 10,
+            compressed_w: 8,
+            compressed_h: 8,
+        }
+    }
 }
 
 impl SimilarChecker {
@@ -28,7 +37,6 @@ impl SimilarChecker {
             threshold: 10,
             compressed_w: 8,
             compressed_h: 8,
-            grayscale: false,
         }
     }
 
