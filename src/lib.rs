@@ -6,26 +6,56 @@
 use image::{self, FilterType, GenericImageView};
 
 /// SimilarChecker has settings for detecting similar image.
+#[derive(Default)]
 pub struct SimilarChecker {
     threshold: usize,
     compressed_w: usize,
     compressed_h: usize,
+    grayscale : bool,
 }
 
 impl SimilarChecker {
-    /// Inits SimilarChecker with params.
+    /// Inits SimilarChecker.
     ///
     /// # Examples
     ///
     /// ```
-    /// let checker = simimgrs::SimilarChecker::new(10, 8, 8);
+    /// let checker = simimgrs::SimilarChecker::new();
     /// ```
-    pub fn new(threshold: usize, compressed_w: usize, compressed_h: usize) -> SimilarChecker {
+    pub fn new() -> Self {
+        // sets default setting.
         SimilarChecker {
-            threshold,
-            compressed_w,
-            compressed_h,
+            threshold: 10,
+            compressed_w: 8,
+            compressed_h: 8,
+            grayscale: false,
         }
+    }
+
+    /// Sets compression_size parametor for SimilarChecker.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// let checker = simimgrs::SimilarChecker::new().compression_size(10, 10);
+    /// ```
+    pub fn compression_size(self, width: usize, height: usize) -> Self {
+        SimilarChecker {
+            compressed_w: width,
+            compressed_h: height,
+            ..self
+        }
+    }
+
+    /// Sets threshold parametor for SimilarChecker.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// let checker = simimgrs::SimilarChecker::new().threshold(10);
+    /// ```
+    pub fn threshold(self, threshold: usize) -> Self {
+        SimilarChecker { threshold, ..self }
     }
 
     /// Checks for similar image using average hash algorism.
@@ -36,7 +66,7 @@ impl SimilarChecker {
     /// let img1 = image::open("testdata/aws_batch.png").unwrap();
     /// let img2 = image::open("testdata/aws_rekognition.png").unwrap();
 
-    /// let checker = simimgrs::SimilarChecker::new(10, 8, 8);
+    /// let checker = simimgrs::SimilarChecker::new();
     /// assert!(!checker.is_similar(img1, img2))
     /// ```
     pub fn is_similar(&self, img1: image::DynamicImage, img2: image::DynamicImage) -> bool {
@@ -66,6 +96,7 @@ fn get_hash(img: image::DynamicImage) -> usize {
     let mut sum_pixels: usize = 0;
     let mut pixels: Vec<usize> = Vec::new();
 
+    // TODO: supports other than gray image.
     for (_x, _y, pixel) in img.pixels() {
         let red = pixel[0];
         sum_pixels += red as usize;
