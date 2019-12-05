@@ -8,6 +8,7 @@ description = "this crate checks for similar image using average hash algorism."
 documentation = "https://github.com/po3rin/simimgrs/blob/master/README.md"
 repository = "https://github.com/po3rin/simimgrs"
 homepage = "https://github.com/po3rin/simimgrs"
+readme = "README.md"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
