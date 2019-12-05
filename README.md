@@ -17,9 +17,7 @@ this crate checks for similar image using average hash algorism. The average of 
 
 ```rust
 use image;
-extern crate simimgrs;
-
-use std::env;
+use simimgrs;
 
 fn main() {
     let img1 = image::open("testdata/go1.jpg").unwrap();
