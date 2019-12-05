@@ -1,10 +1,13 @@
 [package]
 name = "simimgrs"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["po3rin <abctail30@gmail.com>"]
 edition = "2018"
 license = "Apache-2.0"
 description = "this crate checks for similar image using average hash algorism."
+documentation = "https://github.com/po3rin/simimgrs/blob/master/README.md"
+repository = "https://github.com/po3rin/simimgrs"
+homepage = "https://github.com/po3rin/simimgrs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
