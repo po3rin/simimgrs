@@ -3,6 +3,8 @@
 //! hash value is calculated as “1” for greater than the average
 //! and “0” for less than the average.
 
+use std::thread;
+use std::sync::mpsc;
 use image::{self, FilterType, GenericImageView};
 
 /// SimilarChecker has settings for detecting similar image.
@@ -78,11 +80,28 @@ impl SimilarChecker {
     /// assert!(!checker.is_similar(img1, img2))
     /// ```
     pub fn is_similar(&self, img1: image::DynamicImage, img2: image::DynamicImage) -> bool {
-        let hash1 = get_hash(process(img1, self.compressed_w, self.compressed_h));
-        let hash2 = get_hash(process(img2, self.compressed_w, self.compressed_h));
+        let w = self.compressed_w;
+        let h = self.compressed_h;
 
-        let distance = get_distance(hash1, hash2);
+        let (tx, rx) = mpsc::channel();
+        let tx1 = mpsc::Sender::clone(&tx);
 
+        thread::spawn(move || {
+            let hash1 = get_hash(process(img1, w, h));
+            tx1.send(hash1).unwrap();
+        });
+
+        thread::spawn(move || {
+            let hash2 = get_hash(process(img2, w, h));
+            tx.send(hash2).unwrap();
+        });
+
+        let mut v: Vec<usize> = Vec::new();
+        for received in rx {
+            v.push(received)
+        }
+
+        let distance = get_distance(v[0], v[1]);
         distance < self.threshold
     }
 }
@@ -100,7 +119,15 @@ fn process(
     .grayscale()
 }
 
-fn get_hash(img: image::DynamicImage) -> usize {
+/// get_hash calculate average hash.
+///
+/// # Examples
+///
+/// ```
+/// let img = image::open("testdata/aws_batch.png").unwrap();
+/// assert_eq!(simimgrs::get_hash(img), 18446744073709551615)
+/// ```
+pub fn get_hash(img: image::DynamicImage) -> usize {
     let mut sum_pixels: usize = 0;
     let mut pixels: Vec<usize> = Vec::new();
 
@@ -126,7 +153,14 @@ fn get_hash(img: image::DynamicImage) -> usize {
     hash
 }
 
-fn get_distance(hash1: usize, hash2: usize) -> usize {
+/// get_distance gets distance between two average hash.
+///
+/// # Examples
+///
+/// ```
+/// assert_eq!(simimgrs::get_distance(1110,1101), 4)
+/// ```
+pub fn get_distance(hash1: usize, hash2: usize) -> usize {
     let mut d = 0;
     for i in 0..64 {
         let k = 1 << i;
