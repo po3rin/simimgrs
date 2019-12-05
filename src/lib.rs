@@ -3,9 +3,9 @@
 //! hash value is calculated as “1” for greater than the average
 //! and “0” for less than the average.
 
-use std::thread;
-use std::sync::mpsc;
 use image::{self, FilterType, GenericImageView};
+use std::sync::mpsc;
+use std::thread;
 
 /// SimilarChecker has settings for detecting similar image.
 // #[derive(Default)]
