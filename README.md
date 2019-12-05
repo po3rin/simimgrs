@@ -27,6 +27,14 @@ fn main() {
 }
 ```
 
+## As CLI
+
+```bash
+$ cargo install simimgrs
+$ simimgrs testdata/go1.jpg testdata/go2.jpg
+similar image: true
+```
+
 ## Dependencies
 
 https://github.com/image-rs/image
