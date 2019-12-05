@@ -1,10 +1,8 @@
 # simimgrs
 
-[![CircleCI](https://circleci.com/gh/po3rin/simimgrs.svg?style=shield)](https://circleci.com/gh/po3rin/simimgrs)
+[![CircleCI](https://circleci.com/gh/po3rin/simimgrs.svg?style=shield)](https://circleci.com/gh/po3rin/simimgrs) [![Crate](https://img.shields.io/crates/v/simimgrs.svg)](https://crates.io/crates/simimgrs) [![API](https://docs.rs/simimgrs/badge.svg)](https://docs.rs/simimgrs)
 
 -----
-
-in devlopment ...
 
 ## What is
 
