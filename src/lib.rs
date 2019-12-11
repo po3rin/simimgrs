@@ -101,7 +101,7 @@ impl SimilarChecker {
             v.push(received)
         }
 
-        let distance = get_distance(v[0], v[1], w*h);
+        let distance = get_distance(v[0], v[1], w * h);
         distance < self.threshold
     }
 }
@@ -181,6 +181,9 @@ mod tests {
 
     #[test]
     fn get_distance_2() {
-        assert_eq!(get_distance(17431013446337445887, 17431022259610337215, 64), 3)
+        assert_eq!(
+            get_distance(17431013446337445887, 17431022259610337215, 64),
+            3
+        )
     }
 }
