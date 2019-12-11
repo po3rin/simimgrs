@@ -101,7 +101,7 @@ impl SimilarChecker {
             v.push(received)
         }
 
-        let distance = get_distance(v[0], v[1]);
+        let distance = get_distance(v[0], v[1], w*h);
         distance < self.threshold
     }
 }
@@ -158,11 +158,11 @@ pub fn get_hash(img: image::DynamicImage) -> usize {
 /// # Examples
 ///
 /// ```
-/// assert_eq!(simimgrs::get_distance(1110,1101), 4)
+/// assert_eq!(simimgrs::get_distance(1110, 1101, 64), 4)
 /// ```
-pub fn get_distance(hash1: usize, hash2: usize) -> usize {
+pub fn get_distance(hash1: usize, hash2: usize, pix_num: usize) -> usize {
     let mut d = 0;
-    for i in 0..64 {
+    for i in 0..pix_num {
         let k = 1 << i;
         if (hash1 & k) != (hash2 & k) {
             d += 1
@@ -176,11 +176,11 @@ mod tests {
     use super::*;
     #[test]
     fn get_distance_1() {
-        assert_eq!(get_distance(2247878505465, 2488321179641), 6)
+        assert_eq!(get_distance(2247878505465, 2488321179641, 64), 6)
     }
 
     #[test]
     fn get_distance_2() {
-        assert_eq!(get_distance(17431013446337445887, 17431022259610337215), 3)
+        assert_eq!(get_distance(17431013446337445887, 17431022259610337215, 64), 3)
     }
 }
