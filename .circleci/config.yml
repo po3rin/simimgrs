@@ -1,5 +1,12 @@
 version: 2.1
 jobs:
+  coverage:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: Coverage with docker
+          command: docker run --security-opt seccomp=unconfined -v "${PWD}:/volume" xd009642/tarpaulin
   build:
     docker:
       - image: circleci/rust
@@ -14,20 +21,34 @@ jobs:
       - run:
           name: fmt
           command: cargo fmt -- --check
+      - run:
+          name: setup sccache
+          command: |
+            cargo install sccache cargo-tarpaulin
+            echo 'export "RUSTC_WRAPPER"="sccache"' >> $BASH_ENV
+            echo 'export "SCCACHE_CACHE_SIZE"="1G"' >> $BASH_ENV
+
       - restore_cache:
-          keys:
-            - v1-cargo-lock-{{ checksum "Cargo.lock" }}
+          name: Restore sccache cache
+          key: sccache-cache-stable-{{ arch }}-{{ .Environment.CIRCLE_JOB }}
       - run:
           name: build
           command: cargo build
       - run:
           name: lint
           command: cargo clippy -- -D warnings
-      - save_cache:
-          key: v1-cargo-lock-{{ checksum "Cargo.lock" }}
-          paths:
-            - "/usr/local/cargo/registry"
-            - "target"
       - run:
           name: test
-          command: cargo test
+          command: |
+            cargo test
+      - save_cache:
+          name: Save sccache cache
+          key: sccache-cache-stable-{{ arch }}-{{ .Environment.CIRCLE_JOB }}-{{ epoch }}
+          paths:
+            - "~/.cache/sccache"
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - coverage
