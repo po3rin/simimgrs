@@ -17,10 +17,9 @@ jobs:
       - run:
           name: setup sccache
           command: |
-            cargo install sccache
+            cargo install sccache cargo-tarpaulin
             echo 'export "RUSTC_WRAPPER"="sccache"' >> $BASH_ENV
             echo 'export "SCCACHE_CACHE_SIZE"="1G"' >> $BASH_ENV
-            sccache --version
 
       - restore_cache:
           name: Restore sccache cache
