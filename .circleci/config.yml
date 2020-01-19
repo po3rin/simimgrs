@@ -33,7 +33,11 @@ jobs:
           command: cargo clippy -- -D warnings
       - run:
           name: test
-          command: cargo test
+          command: |
+            # cargo test
+            bash <(curl https://raw.githubusercontent.com/xd009642/tarpaulin/master/travis-install.sh)
+            cargo tarpaulin --all-features --out Xml
+            bash <(curl -s https://codecov.io/bash)
       - save_cache:
           name: Save sccache cache
           key: sccache-cache-stable-{{ arch }}-{{ .Environment.CIRCLE_JOB }}-{{ epoch }}
